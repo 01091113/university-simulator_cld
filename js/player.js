@@ -3,6 +3,13 @@ const STARTING_PLAYER = {
   progress:{currentGrade:1,currentTurn:1,totalTurns:28,currentMonthIndex:0,turnType:"semester_start",gameEnded:false},
   stats:{health:72,stress:20,gradePoint:48,relationship:50,career:0,otaku:25,love:0,money:20},
   state:{some:false,dating:false,conflict:false,brokenUp:false,military:false,intern:false,graduateOffer:false,warningCount:0,burnoutCount:0,pinnedWarning:"",oversleptBoost:false,hasRing:false,partTimeJob:false,majorEvent2Done:false,majorEvent3Done:false,activeChain:null,rumors:[],messageBlocked:false,lastAction:'',lastRumorId:null,blackCompanyRoute:false,consecutiveAction:'',consecutiveCount:0,specialFlags:{}},
+  rivalName: "원이호",
+rivalAffinity: 0,
+rivalStep: 0,
+storyStep: 0,
+seenRumors: {},
+militaryMode: false,
   achievements:[],logs:[]
 };
 let player = JSON.parse(JSON.stringify(STARTING_PLAYER));
+
