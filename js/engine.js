@@ -233,6 +233,7 @@ function chooseMain(choice){
   if(choice.id==='job'&&chance(0.2)) startJobChain('randomhire');
   if(choice.id==='grad'&&player.stats.gradePoint>=76&&chance(0.35)) player.state.graduateOffer=true;
   if((choice.id==='rest'||choice.id==='play')&&player.stats.otaku>=30&&chance(0.25)){
+ 
     return popupEvent(sample(OTAKU_EVENTS),'general');
   }
   randomEventStep();
@@ -305,6 +306,30 @@ function randomEventStep(){
   let p=0.32;
   if(player.state.oversleptBoost) p+=0.22;
   if(chance(p)){
+// 특수 루트 추가 트리거
+if (!player.state.specialFlags.scholarship &&
+    player.stats.gradePoint >= 65 &&
+    player.stats.money <= 15 &&
+    chance(0.35)) {
+  player.state.specialFlags.scholarship = true;
+  return popupEvent(sample(SPECIAL_ROUTE_EVENTS.scholarship), 'special');
+}
+
+if (!player.state.specialFlags.insider &&
+    player.stats.relationship >= 75 &&
+    chance(0.35)) {
+  player.state.specialFlags.insider = true;
+  return popupEvent(sample(SPECIAL_ROUTE_EVENTS.insider), 'special');
+}
+
+if (!player.state.specialFlags.startup &&
+    player.progress.currentGrade >= 3 &&
+    player.stats.career >= 60 &&
+    player.stats.money <= 20 &&
+    chance(0.35)) {
+  player.state.specialFlags.startup = true;
+  return popupEvent(sample(SPECIAL_ROUTE_EVENTS.startup), 'special');
+}
     // 특수 루트 우선 체크
     if(typeof maybeSpecialRouteEvent==='function'&&maybeSpecialRouteEvent()) return;
     if(player.state.oversleptBoost){
