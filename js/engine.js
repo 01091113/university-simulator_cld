@@ -240,10 +240,13 @@ function chooseMain(choice){
   } else player.state.oversleptBoost=false;
 
   if(choice.id==='date'&&player.stats.love>=20) startLoveChain();
-  if(choice.id==='club'&&player.state.rivalMet&&player.state.rivalAffinity>=2&&chance(0.2)){
+  if(choice.id==='club'&&player.state.rivalMet&&player.state.rivalAffinity>=2&&chance(0.45)){
     if(typeof triggerRivalSparkEvent==='function'&&triggerRivalSparkEvent()) return;
   }
-  if(choice.id==='military'&&player.profile.gender==='male') return popupEvent(sample(MILITARY_EVENTS),'military');
+ if(choice.id==='military' && player.profile.gender==='male'){
+  player.state.military = true;
+  return popupEvent(sample(MILITARY_EVENTS),'military');
+}
   if(choice.id==='partTime'&&chance(0.18)) startJobChain('parttime');
   if(choice.id==='job'&&chance(0.2)) startJobChain('randomhire');
   if(choice.id==='grad'&&player.stats.gradePoint>=76&&chance(0.35)) player.state.graduateOffer=true;
@@ -254,10 +257,29 @@ function chooseMain(choice){
   randomEventStep();
 }
 
+
+// ── 군 복무 중 ──────────────────────────────────────────────
+function militaryTurn(){
+  return popupEvent({
+    title:"군 복무 중",
+    description:"시간이 흐르고 있다. 대학은 잠시 멈췄다.",
+    choices:[
+      {text:"훈련 받는다",effect:{health:3,stress:2}},
+      {text:"PX 간다",effect:{stress:-3,money:-2}},
+      {text:"휴가 기다린다",effect:{stress:-5}}
+    ]
+  },'military');
+}
+
+
 // ── 찌라시 팝업 ──────────────────────────────────────────────
 function maybeRumorPopup(){
   if(!chance(0.45)) return;
   const rumor=sample(RUMOR_EVENTS);
+
+  // ✅ 추가 (중복 방지 핵심)
+  if(player.state.seenRumors[rumor.id]) return;
+  player.state.seenRumors[rumor.id] = true;
   player.state.lastRumorId=rumor.id;
   player.state.rumors.unshift({title:rumor.title,body:rumor.description});
   if(player.state.rumors.length>30) player.state.rumors.pop();
