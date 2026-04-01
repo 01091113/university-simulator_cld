@@ -1,0 +1,1 @@
+function updateRelationshipState(){const love=player.stats.love;player.state.some=love>=35&&love<70;player.state.dating=love>=70&&player.state.hasRing;player.state.conflict=player.state.dating&&player.stats.stress>=75;player.state.brokenUp=love<=5;} function updateVisualRouteState(){}

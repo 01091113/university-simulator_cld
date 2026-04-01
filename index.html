@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대학 시뮬레이터 v5</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="pastel-sky">
+<div id="app">
+  <div id="stat-feedback"></div>
+
+  <section id="start-screen" class="screen active">
+    <div class="start-card panel">
+      <div class="top-row">
+        <div>
+          <h1>🎓 대학 시뮬레이터</h1>
+          <p class="subtitle">현실 대학생 블랙코미디 + 텍스트 어드벤처 + 스탯 시뮬</p>
+        </div>
+        <button class="secondary-btn" id="open-gallery-btn">엔딩 갤러리</button>
+      </div>
+
+      <div class="form-grid">
+        <label class="field"><span>이름</span><input id="player-name" type="text" placeholder="이름 입력" /></label>
+        <label class="field"><span>성별</span>
+          <select id="player-gender">
+            <option value="female">여성</option>
+            <option value="male">남성</option>
+            <option value="other">기타</option>
+          </select>
+        </label>
+        <label class="field"><span>단과대학</span><select id="player-college"></select></label>
+        <label class="field"><span>학과</span><select id="player-major"></select></label>
+        <label class="field"><span>테마 색상</span>
+          <select id="player-theme">
+            <option value="pastel-sky">☁️ 파스텔 스카이</option>
+            <option value="pastel-mint">🌿 파스텔 민트</option>
+            <option value="pastel-lavender">🪻 파스텔 라벤더</option>
+            <option value="mono-black">🌑 다크 모드</option>
+            <option value="banana-choco">🍫 초코바나나</option>
+          </select>
+        </label>
+        <label class="field"><span>저장 슬롯</span>
+          <select id="save-slot">
+            <option value="slot1">슬롯 1</option>
+            <option value="slot2">슬롯 2</option>
+            <option value="slot3">슬롯 3</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="major-info-box" class="major-box">선택한 학과의 특징과 보정치가 여기에 표시됩니다.</div>
+
+      <div class="start-actions">
+        <button class="secondary-btn" id="load-slot-btn">선택 슬롯 불러오기</button>
+        <button class="primary-btn" id="start-game-btn">🎮 게임 시작</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="game-screen" class="screen">
+    <header class="top-bar panel">
+      <div>
+        <h1>🎓 대학 시뮬레이터</h1>
+        <p class="subtitle">무엇을 택해도 그게 다 좋은 거였으면 하는 대학 생활</p>
+        <div id="profile-line" class="profile-line"></div>
+      </div>
+      <div class="meta-group">
+        <span class="meta-pill" id="grade-pill"></span>
+        <span class="meta-pill" id="turn-pill"></span>
+        <span class="meta-pill" id="month-pill"></span>
+        <span class="meta-pill" id="slot-pill"></span>
+        <span class="meta-pill money-pill" id="money-pill"></span>
+        <button class="secondary-btn small" id="shop-btn">🛒 상점</button>
+        <button class="secondary-btn small" id="save-now-btn">💾 저장</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel status-panel">
+        <h2 id="status-title">상태</h2>
+        <div id="status-list"></div>
+        <h3>상태 배지</h3>
+        <div id="state-badges"></div>
+        <h3>경고</h3>
+        <div id="warning-box"></div>
+        <h3>업적</h3>
+        <div id="achievement-box"></div>
+      </aside>
+
+      <section class="panel event-panel">
+        <div class="panel-top">
+          <h2 id="event-title">새내기의 시작</h2>
+          <div class="top-actions">
+            <button class="secondary-btn small" id="rumor-history-btn">📱 찌라시 로그</button>
+            <button class="secondary-btn small" id="back-start-btn">처음 화면</button>
+          </div>
+        </div>
+        <p id="event-description"></p>
+        <div id="choice-buttons"></div>
+      </section>
+
+      <section class="panel log-panel">
+        <h2>📖 로그</h2>
+        <div id="log-warning-pin"></div>
+        <div id="story-log"></div>
+      </section>
+    </main>
+  </section>
+
+  <section id="gallery-screen" class="screen">
+    <div class="panel gallery-card">
+      <div class="panel-top">
+        <h1>🏁 엔딩 갤러리</h1>
+        <button class="secondary-btn" id="close-gallery-btn">닫기</button>
+      </div>
+      <div id="gallery-list" class="gallery-list"></div>
+    </div>
+  </section>
+
+  <div id="modal" class="modal hidden">
+    <div id="modal-card" class="modal-card">
+      <div class="panel-top">
+        <h2 id="modal-title">이벤트</h2>
+        <button class="secondary-btn small" id="modal-close-btn">닫기</button>
+      </div>
+      <p id="modal-text"></p>
+      <div id="modal-choices"></div>
+    </div>
+  </div>
+
+  <div id="report-modal" class="modal hidden">
+    <div class="modal-card">
+      <h2>📋 학년 종료 리포트</h2>
+      <div id="report-content"></div>
+      <button class="primary-btn" id="close-report-btn">다음으로 →</button>
+    </div>
+  </div>
+
+  <div id="shop-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="panel-top">
+        <h2>🛒 상점</h2>
+        <button class="secondary-btn small" id="close-shop-btn">닫기</button>
+      </div>
+      <p id="shop-money-text"></p>
+      <div id="shop-list"></div>
+    </div>
+  </div>
+
+  <div id="rumor-modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="panel-top">
+        <h2>📱 찌라시 아카이브</h2>
+        <button class="secondary-btn small" id="close-rumor-btn">닫기</button>
+      </div>
+      <div id="rumor-list" class="rumor-list"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/player.js"></script>
+<script src="js/state.js"></script>
+<script src="js/random.js"></script>
+<script src="js/majors.js"></script>
+<script src="js/events.js"></script>
+<script src="js/events_love.js"></script>
+<script src="js/events_otaku.js"></script>
+<script src="js/events_military.js"></script>
+<script src="js/endings.js"></script>
+<script src="js/story.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/save.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/messages.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
