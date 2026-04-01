@@ -308,7 +308,13 @@ function popupEvent(eventObj,variant){
         addLog('고백 준비 실패','반지 없이 고백하려다 괜히 타이밍만 어색해졌다.');
         applyEffect({love:-2,stress:4});
       } else {
-        applyEffect(ch.effect||{});
+        let effect = {...(ch.effect||{})};
+
+if(effect.love){
+  effect.love = Math.floor(effect.love * 1.5);
+}
+
+applyEffect(effect);
         const logBody=ch.resultText?`${eventObj.description}\n\n▶ ${ch.resultText}`:eventObj.description;
         addLog(`이벤트: ${eventObj.title}`,logBody);
         if(typeof ch.onChoose==='function') ch.onChoose();
@@ -342,6 +348,13 @@ function randomEventStep(){
   if(chance(p)){
     if(typeof maybeSpecialRouteEvent==='function'&&maybeSpecialRouteEvent()) return;
     if(typeof maybeTriggerRivalEvent==='function'&&maybeTriggerRivalEvent()) return;
+    // 라이벌 이벤트
+if(chance(0.45)){
+  const ev = RIVAL_EVENTS[player.state.rivalStep];
+  if(ev){
+    return popupEvent(ev,'special');
+  }
+}
     if(typeof maybeTriggerStoryEvent==='function'&&maybeTriggerStoryEvent()) return;
     if(player.state.oversleptBoost){
       player.state.oversleptBoost=false;
@@ -526,6 +539,17 @@ function maybeOpenReport(prevGrade){
 
 // ── 턴 종료 ──────────────────────────────────────────────────
 function finishTurn(){
+ // 군대 상태면 대학 진행 멈춤
+  if(player.state.military){
+    return militaryTurn();
+  }
+
+  player.progress.currentTurn++;
+  player.progress.currentMonthIndex++;
+
+  updateTopBar();
+  randomEventStep();
+}
   updateRelationshipState();updateWarnings();checkAchievements();
   const immediate=checkImmediateEnding();
   if(immediate) return endGame(immediate);
