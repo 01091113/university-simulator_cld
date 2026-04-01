@@ -566,3 +566,92 @@ function triggerSpecialRoute(routeKey){
   popupEvent(enrichedEv, 'special');
   return true;
 }
+
+// ============================================================
+// 추가 특수 루트 이벤트 (확장팩)
+// 기존 SPECIAL_ROUTE_EVENTS 아래에 추가
+// ============================================================
+
+if (typeof SPECIAL_ROUTE_EVENTS !== "undefined") {
+
+  // ─────────────────────────────────────────
+  // 1. 장학금 구원 루트
+  // 조건: 학점 ≥ 65 && 돈 ≤ 15
+  // ─────────────────────────────────────────
+  SPECIAL_ROUTE_EVENTS.scholarship = [
+    {
+      id: "sp_scholar_1",
+      title: "장학금 공지를 발견했다",
+      description: "과사 게시판에 장학금 공지가 붙어 있었다.\n조건을 보니 성적은 간당간당하게 될 것 같다.",
+      choices: [
+        { text: "신청서 쓴다", effect: { stress: 3, career: 2 } },
+        { text: "귀찮아서 안 한다", effect: { stress: -2 } },
+        { text: "교수님께 추천서 부탁한다", effect: { relationship: 4, stress: 2 } }
+      ]
+    },
+    {
+      id: "sp_scholar_2",
+      title: "장학금 결과 발표",
+      description: "메일이 왔다. 장학금 결과를 확인하는 순간이다.",
+      choices: [
+        { text: "메일을 연다", effect: { money: 25, stress: -6 } },
+        { text: "무서워서 나중에 본다", effect: { stress: 3 } },
+        { text: "친구에게 먼저 보라고 한다", effect: { relationship: 3, stress: 2 } }
+      ]
+    }
+  ];
+
+  // ─────────────────────────────────────────
+  // 2. 과 생활 핵인싸 루트
+  // 조건: 인간관계 ≥ 75
+  // ─────────────────────────────────────────
+  SPECIAL_ROUTE_EVENTS.insider = [
+    {
+      id: "sp_insider_1",
+      title: "과 모임을 주도하게 됐다",
+      description: "어쩌다 보니 모임 총무 역할을 맡게 됐다.\n사람들이 다 나를 찾는다.",
+      choices: [
+        { text: "열심히 운영한다", effect: { relationship: 8, stress: 5 } },
+        { text: "적당히 한다", effect: { relationship: 4, stress: 2 } },
+        { text: "다른 사람에게 넘긴다", effect: { relationship: -2, stress: -2 } }
+      ]
+    },
+    {
+      id: "sp_insider_2",
+      title: "MT에서 인기 폭발",
+      description: "술게임, 노래, 분위기. 오늘은 내가 주인공이다.",
+      choices: [
+        { text: "끝까지 놀다 온다", effect: { relationship: 10, health: -4, stress: -3 } },
+        { text: "적당히 놀고 먼저 간다", effect: { relationship: 5, health: 1 } },
+        { text: "사진 찍어주고 정리만 한다", effect: { relationship: 6, stress: 2 } }
+      ]
+    }
+  ];
+
+  // ─────────────────────────────────────────
+  // 3. 창업 삽질 루트
+  // 조건: career ≥ 60 && money ≤ 20 && 3학년 이상
+  // ─────────────────────────────────────────
+  SPECIAL_ROUTE_EVENTS.startup = [
+    {
+      id: "sp_startup_1",
+      title: "친구가 창업하자고 했다",
+      description: "아이디어는 있는데 돈은 없다.\n그래도 뭔가 해보고 싶다.",
+      choices: [
+        { text: "같이 한다", effect: { career: 6, money: -5, stress: 5 } },
+        { text: "조언만 해준다", effect: { relationship: 4, career: 2 } },
+        { text: "거절한다", effect: { stress: -2 } }
+      ]
+    },
+    {
+      id: "sp_startup_2",
+      title: "첫 수익이 발생했다",
+      description: "큰 돈은 아니지만 우리가 만든 걸로 돈을 벌었다.",
+      choices: [
+        { text: "사업 계속한다", effect: { money: 20, career: 5, stress: 4 } },
+        { text: "경험으로 만족한다", effect: { career: 6, stress: -2 } },
+        { text: "팀 해산한다", effect: { relationship: -2, stress: -1 } }
+      ]
+    }
+  ];
+}
