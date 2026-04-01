@@ -7,5 +7,7 @@ function modalVariant(type){
   card.className='modal-card';
   if(type==='love') card.classList.add('variant-love');
   else if(type==='military') card.classList.add('variant-military');
+  else if(type==='housing') card.classList.add('variant-housing');
+  else if(type==='special') card.classList.add('variant-special');
   else card.classList.add('variant-general');
 }
